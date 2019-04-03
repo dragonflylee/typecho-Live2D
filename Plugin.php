@@ -45,7 +45,7 @@ class Live2D_Plugin implements Typecho_Plugin_Interface {
      */
     public static function config(Typecho_Widget_Helper_Form $form){
         $model = new Typecho_Widget_Helper_Form_Element_Select('model', array(
-            '1-1' => 'Pio', '2-1' => 'Tia', '3-1' => '22娘', '4-1' => '33娘', '5-1' => 'Shizuku',
+            '1-0' => 'Pio', '2-0' => 'Tia', '3-1' => '22娘', '4-1' => '33娘', '5-1' => 'Shizuku',
             '6-2' => 'Nepnep', '6-7' => 'Noir', '6-11' => 'Blanc'), '1-1', _t('角色模型'));
         $form->addInput($model);
 
@@ -68,9 +68,7 @@ class Live2D_Plugin implements Typecho_Plugin_Interface {
      *@return void
      */
     public static function header() {
-        echo '<style>
-        canvas#live2d{right:0;bottom:0;z-index:999;position:fixed;pointer-events:none}
-    </style>';
+        echo '<link href="'.Helper::options()->pluginUrl.'/Live2D/assets/live2d.min.css" rel="stylesheet">';
     }
 
     /**
@@ -78,10 +76,14 @@ class Live2D_Plugin implements Typecho_Plugin_Interface {
      *@return void
      */
     public static function footer() {
+        $js = Helper::options()->pluginUrl.'/Live2D/assets';
         $opts = Helper::options()->plugin('Live2D');
         list($width, $height) = explode('x', $opts->size);
-        echo '<canvas id="live2d" width="'.$width.'" height="'.$height.'"></canvas>
-    <script src="//live2d-cdn.fghrsh.net/assets/1.4.2/live2d.min.js"></script>
+        echo '<div class="live2d"><div class="live2d-tips"></div>
+        <canvas id="live2d" width="'.$width.'" height="'.$height.'"></canvas>
+    </div>
+    <script src="'.$js.'/live2d.min.js"></script>
+    <script src="'.$js.'/message.min.js"></script>
     <script type="text/javascript">
         loadlive2d("live2d", "//live2d.fghrsh.net/api/get/?id='.$opts->model.'");
     </script>';
